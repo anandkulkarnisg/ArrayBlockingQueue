@@ -9,6 +9,7 @@
 #include<climits>
 
 #include "TimeUtils.h"
+#include "ArrayBlockingQueueExceptions.h"
 
 #ifndef ArrayBlockingQueue_H
 #define ArrayBlockingQueue_H
@@ -35,7 +36,7 @@ template<typename T> class ArrayBlockingQueue
 		std::string m_name;
 					
 	public:
-		ArrayBlockingQueue(const size_t&);		// This creates an empty queue with given capacity and fairness set to false.
+		//ArrayBlockingQueue(const size_t&);		// This creates an empty queue with given capacity and fairness set to false.
 		ArrayBlockingQueue(const size_t&, const bool& = false);	// This creates an empty queue with given capacity and fairness mode [ default false ].
 		ArrayBlockingQueue(const size_t&, const bool&, const std::vector<T>&);	// This creates queue with given capacity, fairness mode and items are populated from input vector collection.
 		
@@ -52,9 +53,9 @@ template<typename T> class ArrayBlockingQueue
 		bool offer(const T&);			// Inserts the specified element at the tail of this queue if it is possible to do so immediately without exceeding the queue's capacity, 
 											// returning true upon success and false if this queue is full.
 		bool offer(const T&, const long&, const TimeUnit&);	// Inserts the specified element at the tail of this queue, 
-																// waiting up to the specified wait time for space to become available if the queue is full.
-		T peek();							// Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
-		T poll();							// Retrieves and removes the head of this queue, or returns null if this queue is empty.
+															// waiting up to the specified wait time for space to become available if the queue is full.
+		std::pair<bool, T> peek();			// Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
+		std::pair<bool, T> poll();			// Retrieves and removes the head of this queue, or returns null if this queue is empty.
 		T poll(const long&, const TimeUnit&);	// Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
 		void put(const T&);					// Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
 		size_t remainingCapacity();			// Returns the number of additional elements that this queue can ideally (in the absence of memory or resource constraints) accept without blocking.
@@ -63,6 +64,7 @@ template<typename T> class ArrayBlockingQueue
 		T take();							// Retrieves and removes the head of this queue, waiting if necessary until an element becomes available.
 		std::vector<T> toArray();				// Returns an array containing all of the elements in this queue, in proper sequence.
 		std::string toString();				// Returns a string representation of this collection.
+		~ArrayBlockingQueue();				// deallocate the array.
 };
 
 #endif

@@ -6,20 +6,11 @@
 
 using namespace std;
 
-// First we implement the constructor which only takes capacity. It creates an empty queue.
-template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity) : m_capacity(capacity), m_fair(false), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
-{
-	if(capacity<1)
-		throw std::string("IllegalArgumentException");
-	m_queue = new T[capacity];
-	m_name = getName();
-}
-
-// We next implement the constructor which takes capacity, and fairness mode.
+// We first implement the constructor which takes capacity, and fairness mode.
 template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity, const bool& fair) : m_capacity(capacity), m_fair(fair), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
 	if(capacity<1)
-		throw std::string("IllegalArgumentException");
+		throw IllegalArgumentException();
 	m_queue = new T[capacity];
 	m_name = getName();
 }
@@ -29,7 +20,7 @@ template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& cap
 	m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
 	if(capacity<inputCollection.size() || capacity<1lu)
-		throw std::string("IllegalArgumentException");
+		throw IllegalArgumentException();
 
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	m_queue = new T[capacity];
@@ -56,7 +47,7 @@ template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(isFull())
-		throw std::string("IllegalStateException");	
+		throw IllegalStateException();
 	bool returnStatus=enqueue(item);
 	return(returnStatus);
 }
@@ -212,7 +203,7 @@ template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target, const
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(size<1)
-		throw std::string("IllegalArgumentException");
+		throw IllegalStateException();
 	int result=drainToInternal(target, size);
 	return(result);
 }
@@ -248,25 +239,26 @@ template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item, const long
 }
 
 // We implement the peek method. Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
-template<typename T> T ArrayBlockingQueue<T>::peek()
+template<typename T> pair<bool,T> ArrayBlockingQueue<T>::peek()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
+	pair<bool, T> returnItem=make_pair(false, T());
 	if(isEmpty())
-		return(T());
+		return(returnItem);
 	else
-		return(m_queue[m_frontIdx]);
+		return(make_pair(true, m_queue[m_frontIdx]));
 }
 
 // We next implement the poll method. Retrieves and removes the head of this queue, or returns null if this queue is empty.
-template<typename T> T ArrayBlockingQueue<T>::poll()
+template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	pair<bool,T> item;
+	pair<bool,T> returnItem=make_pair(false, T());
 	if(isEmpty())
-		return(T());
+		return(returnItem);
 	else
-		item = dequeue();		
-	return(item.second);
+		returnItem = dequeue();
+	return(returnItem);
 }
 
 // We next implement the poll with timeout Method. Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
@@ -383,9 +375,17 @@ template<typename T> string ArrayBlockingQueue<T>::toString()
 	string returnString = " ==> [ ArrayBlockingQueue Name = ArrayBlockingQueue." + m_name;
 	returnString += ", capacity = " + to_string(m_capacity);
 	returnString += ", size = " + to_string(m_size);
+	returnString += ", remainingCapacity = " + to_string((m_capacity-m_size));
 	returnString += ", frontIdx = " + to_string(m_frontIdx);
 	returnString += ", rearIdx = " + to_string(m_rearIdx);
 	returnString += ", fair = " + to_string(m_fair);
 	return(returnString);	
 }
+
+// Implement the destructor that will clean the queue/array.
+template<typename T> ArrayBlockingQueue<T>::~ArrayBlockingQueue()
+{
+	delete[] m_queue;
+}
+
 

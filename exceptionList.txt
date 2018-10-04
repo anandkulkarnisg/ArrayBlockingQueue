@@ -1,0 +1,2 @@
+IllegalArgumentException|Exception : -ve or zero size capacity arguments are not allowed. Please specify valid +ve capacity. 
+IllegalStateException|Exception : The queue is full. Hence the add method failed.
