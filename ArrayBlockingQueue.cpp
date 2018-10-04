@@ -2,6 +2,7 @@
 #include<string>
 
 #include "ArrayBlockingQueue.h"
+#include "ArrayBlockingQueueImpl.cpp"
 
 using namespace std;
 
@@ -271,9 +272,9 @@ template<typename T> T ArrayBlockingQueue<T>::poll()
 template<typename T> T ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	pair<bool,T> returnItem = nullptr;
+	pair<bool,T> returnItem = NULL;
 	if(isEmpty())
-		return(returnItem);
+		return(NULL);
 	else
 	{
 		auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
@@ -312,7 +313,11 @@ template<typename T> size_t ArrayBlockingQueue<T>::remainingCapacity()
 template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	// todo later.	
+	if(isEmpty())
+		return(false);
+
+	// This is a costly operation. because removing an element from middle of the queue means the circular buffer has to be painfully shifted and accounted for with every removal found.	
+
 }
 
 // We implement the size method. it returns the current size of the queue.
