@@ -25,8 +25,13 @@ int main(int argc, char* argv[])
 			cout << e.what() << endl;
 		}
 	}	
-	cout << "attempting to reset the array" << endl;
-	testQueue.clear();
-	cout << "After the clear the status is : " << endl << testQueue.toString() << endl;	
+	// Let us try to dequeue the items from the queue.
+	size_t i=0;
+	while(i<vec.size())
+	{
+		int queueItem=testQueue.take();
+		cout << "The item popped out is = " << queueItem << testQueue.toString() << endl;
+		++i;
+	}	
 	return(0);
 }

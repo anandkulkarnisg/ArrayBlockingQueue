@@ -217,11 +217,10 @@ template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item)
 	return(returnStatus);	
 }
 
-// Implement the offer method with dealy parameters.Inserts the specified element at the tail of this queue, waiting up to 
+// Implement the offer method with delay parameters.Inserts the specified element at the tail of this queue, waiting up to 
 // the specified wait time for space to become available if the queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item, const long& waitQuantity, const TimeUnit& timeUnit)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
 	bool returnStatus=false;
 	auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
 	auto startTime = chrono::high_resolution_clock::now();
@@ -325,7 +324,7 @@ template<typename T> T ArrayBlockingQueue<T>::take()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(isEmpty())
-		m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_size)>0); });
+		m_cond.wait(exclusiveLock, [&]() { return(m_size>0); });
 	pair<bool,T> item = dequeue();
 	return(item.second);
 }
@@ -387,5 +386,4 @@ template<typename T> ArrayBlockingQueue<T>::~ArrayBlockingQueue()
 {
 	delete[] m_queue;
 }
-
 
