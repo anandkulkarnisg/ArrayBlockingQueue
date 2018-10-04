@@ -373,6 +373,7 @@ template<typename T> string ArrayBlockingQueue<T>::toString()
 	returnString += ", frontIdx = " + to_string(m_frontIdx);
 	returnString += ", rearIdx = " + to_string(m_rearIdx);
 	returnString += ", fair = " + to_string(m_fair);
+	returnString += ". ]";
 	return(returnString);	
 }
 

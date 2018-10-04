@@ -35,3 +35,4 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 *.swp
+valgrind.csv
