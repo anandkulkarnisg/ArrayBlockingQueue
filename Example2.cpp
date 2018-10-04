@@ -27,11 +27,18 @@ int main(int argc, char* argv[])
 	}	
 	// Let us try to dequeue the items from the queue.
 	size_t i=0;
-	while(i<vec.size())
+	while(i<vec.size()-2)
 	{
 		int queueItem=testQueue.take();
 		cout << "The item popped out is = " << queueItem << testQueue.toString() << endl;
 		++i;
 	}	
+
+	// Verify that the queue is empty now.
+	cout << "The queue empty status = " << (testQueue.size()==0) << endl;
+
+	// Attempt to take polling with timeout and see if we fail to get a result.
+	pair<bool,int> returnItem = testQueue.poll(10, TimeUnit::Seconds);
+	cout << "The returnItem status is : " << returnItem.first << ", " << returnItem.second << endl; 
 	return(0);
 }

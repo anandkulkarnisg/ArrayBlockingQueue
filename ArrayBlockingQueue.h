@@ -1,12 +1,12 @@
-#include<iostream>
-#include<string>
-#include<mutex>
-#include<condition_variable>
-#include<vector>
-#include<utility>
 #include<chrono>
-#include<sstream>
 #include<climits>
+#include<condition_variable>
+#include<iostream>
+#include<mutex>
+#include<sstream>
+#include<string>
+#include<utility>
+#include<vector>
 
 #include "TimeUtils.h"
 #include "ArrayBlockingQueueExceptions.h"
@@ -36,7 +36,6 @@ template<typename T> class ArrayBlockingQueue
 		std::string m_name;
 					
 	public:
-		//ArrayBlockingQueue(const size_t&);		// This creates an empty queue with given capacity and fairness set to false.
 		ArrayBlockingQueue(const size_t&, const bool& = false);	// This creates an empty queue with given capacity and fairness mode [ default false ].
 		ArrayBlockingQueue(const size_t&, const bool&, const std::vector<T>&);	// This creates queue with given capacity, fairness mode and items are populated from input vector collection.
 		
@@ -56,7 +55,7 @@ template<typename T> class ArrayBlockingQueue
 															// waiting up to the specified wait time for space to become available if the queue is full.
 		std::pair<bool, T> peek();			// Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
 		std::pair<bool, T> poll();			// Retrieves and removes the head of this queue, or returns null if this queue is empty.
-		T poll(const long&, const TimeUnit&);	// Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
+		std::pair<bool,T> poll(const long&, const TimeUnit&);	// Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
 		void put(const T&);					// Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
 		size_t remainingCapacity();			// Returns the number of additional elements that this queue can ideally (in the absence of memory or resource constraints) accept without blocking.
 		bool remove(const T&);				// Removes a single instance of the specified element from this queue, if it is present.

@@ -104,21 +104,21 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::dequeue()
 // Implement simple method to get semaphore name. We dont want to keep deriving this repetative calls of toString().
 template<typename T> string ArrayBlockingQueue<T>::getName()
 {
-    const void * address = static_cast<const void*>(this);
-    stringstream stream;
-    stream << address;
-    string result = stream.str();
-    return(result);
+	const void * address = static_cast<const void*>(this);
+	stringstream stream;
+	stream << address;
+	string result = stream.str();
+	return(result);
 }
 
 // Implementation of getThreadId Method. Returns a string of thread-id number.
 template<typename T> string ArrayBlockingQueue<T>::getThreadId()
 {
-    auto myid = this_thread::get_id();
-    stringstream ss;
-    ss << myid;
-    string resultString = ss.str();
-    return(resultString);
+	auto myid = this_thread::get_id();
+	stringstream ss;
+	ss << myid;
+	string resultString = ss.str();
+	return(resultString);
 }
 
 // We need to implement the contains method. Returns true if this queue contains the specified element.
@@ -261,28 +261,23 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 }
 
 // We next implement the poll with timeout Method. Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
-template<typename T> T ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
+template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	pair<bool,T> returnItem=make_pair(false, T());
-	if(isEmpty())
-		return(returnItem.second);
-	else
+	auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
+	auto startTime = chrono::high_resolution_clock::now();
+	auto endTime = startTime;
+	auto durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
+	while(durationCount<duration)
 	{
-		auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
-		auto startTime = chrono::high_resolution_clock::now();
-		auto endTime = startTime;
-		auto durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
-		while(durationCount<duration)
-		{
-			returnItem = dequeue();
-			if(returnItem.first)
-				return(returnItem.second);	
-			endTime=chrono::high_resolution_clock::now();
-			durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
-		}
+		returnItem = dequeue();
+		if(returnItem.first)
+			return(returnItem);	
+		endTime=chrono::high_resolution_clock::now();
+		durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
 	}
-	return(returnItem.second);
+	return(returnItem);
 }
 
 // We next implement the put method.Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
