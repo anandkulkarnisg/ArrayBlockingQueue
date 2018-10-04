@@ -6,6 +6,7 @@
 #include<utility>
 #include<chrono>
 #include<sstream>
+#include<climits>
 
 #include "TimeUtils.h"
 
@@ -15,14 +16,14 @@
 template<typename T> class ArrayBlockingQueue
 {
 	private:
-		T* m_queue;							// This is pointer pointing to the array allocated for this queue. We implement a circular buffer using this array.
-		int m_frontIdx;						// This tracks the front of the queue in the array. Initially when queue is created it is set to -1.
-		int m_rearIdx;						// This tracks the end of the queue in the array. Initially when the queue is created it is set to -1.
-		size_t m_capacity;					// capacity is the size of the allocated array and it cant be changed after initialization.
+		size_t m_capacity;                  // capacity is the size of the allocated array and it cant be changed after initialization.
+        bool m_fair;                        // This tracks if the implementation is fair to waiting threads i.e FIFO implementation. reduces the performance.
+		long int m_frontIdx;				// This tracks the front of the queue in the array. Initially when queue is created it is set to -1.
+		long int m_rearIdx;					// This tracks the end of the queue in the array. Initially when the queue is created it is set to -1.
 		size_t m_size;						// We track size in a variable.
+		T* m_queue;                         // This is pointer pointing to the array allocated for this queue. We implement a circular buffer using this array.
 		std::mutex m_mutex;					// We need mutex to ensure thread safety since this class is ThreadSafe as per Java implementation.
 		std::condition_variable m_cond;		// This is required for signalling purpose in the code when there are waiting threads either to enqueue/dequeue the elements.		
-		bool m_fair;						// This tracks if the implementation is fair to waiting threads i.e FIFO implementation. reduces the performance.
 
 		bool isEmpty();						// returns true/false to indicate if the queue is empty.
 		bool isFull();						// returns if the queue is full to capacity.
@@ -34,9 +35,9 @@ template<typename T> class ArrayBlockingQueue
 		std::string m_name;
 					
 	public:
-		ArrayBlockingQueue(const int&);		// This creates an empty queue with given capacity and fairness set to false.
-		ArrayBlockingQueue(const int&, const bool& = false);	// This creates an empty queue with given capacity and fairness mode [ default false ].
-		ArrayBlockingQueue(const int&, const bool&, const std::vector<T>&);	// This creates queue with given capacity, fairness mode and items are populated from input vector collection.
+		ArrayBlockingQueue(const size_t&);		// This creates an empty queue with given capacity and fairness set to false.
+		ArrayBlockingQueue(const size_t&, const bool& = false);	// This creates an empty queue with given capacity and fairness mode [ default false ].
+		ArrayBlockingQueue(const size_t&, const bool&, const std::vector<T>&);	// This creates queue with given capacity, fairness mode and items are populated from input vector collection.
 		
 		ArrayBlockingQueue(const ArrayBlockingQueue&)=delete;
 		ArrayBlockingQueue& operator=(const ArrayBlockingQueue&)=delete;

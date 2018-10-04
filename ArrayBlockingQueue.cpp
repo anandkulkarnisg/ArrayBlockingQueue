@@ -7,31 +7,32 @@
 using namespace std;
 
 // First we implement the constructor which only takes capacity. It creates an empty queue.
-template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const int& capacity) : m_capacity(capacity), m_fair(false), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
+template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity) : m_capacity(capacity), m_fair(false), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
 	if(capacity<1)
 		throw std::string("IllegalArgumentException");
-	m_queue = new T(capacity);
+	m_queue = new T[capacity];
 	m_name = getName();
 }
 
 // We next implement the constructor which takes capacity, and fairness mode.
-template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const int& capacity, const bool& fair) : m_capacity(capacity), m_fair(fair), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
+template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity, const bool& fair) : m_capacity(capacity), m_fair(fair), m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
 	if(capacity<1)
 		throw std::string("IllegalArgumentException");
-	m_queue = new T(capacity);
+	m_queue = new T[capacity];
 	m_name = getName();
 }
 
 // We next implement the constructor which takes capacity, fairness mode and a vector from which the ArrayBlockingQueue is initialized.
-template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const int& capacity, const bool& fair, const vector<T>& inputCollection) : m_capacity(capacity), m_fair(fair), 
+template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity, const bool& fair, const vector<T>& inputCollection) : m_capacity(capacity), m_fair(fair), 
 	m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
-	if(capacity<inputCollection.size() || capacity<1)
+	if(capacity<inputCollection.size() || capacity<1lu)
 		throw std::string("IllegalArgumentException");
 
 	unique_lock<mutex> exclusiveLock(m_mutex);
+	m_queue = new T[capacity];
 	for(const auto& iter : inputCollection)
 		add(iter);
 	m_name = getName();
@@ -92,7 +93,7 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::dequeue()
 	// All wrapper methods take a lock before calling this function. Please dont lock inside again here.
 	T returnItem;
 	if(isEmpty())
-		return(make_pair(false, -1));
+		return(make_pair(false, T()));
 
 	if(m_frontIdx == m_rearIdx)
 	{
@@ -150,7 +151,7 @@ template<typename T> bool ArrayBlockingQueue<T>::contains(const T& item)
 	else
 	{
 		int currentIdx=m_frontIdx;
-		while(currentIdx<=(m_capacity-1))
+		while(currentIdx<=static_cast<long int>((m_capacity-1)))
 		{
 			if(m_queue[currentIdx] == item)
 				return(true);
@@ -251,7 +252,7 @@ template<typename T> T ArrayBlockingQueue<T>::peek()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(isEmpty())
-		return(nullptr);
+		return(T());
 	else
 		return(m_queue[m_frontIdx]);
 }
@@ -262,7 +263,7 @@ template<typename T> T ArrayBlockingQueue<T>::poll()
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	pair<bool,T> item;
 	if(isEmpty())
-		return(nullptr);
+		return(T());
 	else
 		item = dequeue();		
 	return(item.second);
@@ -272,9 +273,9 @@ template<typename T> T ArrayBlockingQueue<T>::poll()
 template<typename T> T ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	pair<bool,T> returnItem = NULL;
+	pair<bool,T> returnItem=make_pair(false, T());
 	if(isEmpty())
-		return(NULL);
+		return(returnItem.second);
 	else
 	{
 		auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
@@ -290,7 +291,7 @@ template<typename T> T ArrayBlockingQueue<T>::poll(const long& waitQuantity, con
 			durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
 		}
 	}
-	return(returnItem);
+	return(returnItem.second);
 }
 
 // We next implement the put method.Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
@@ -332,7 +333,7 @@ template<typename T> T ArrayBlockingQueue<T>::take()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(isEmpty())
-		m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_queue)>0); });
+		m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_size)>0); });
 	pair<bool,T> item = dequeue();
 	return(item.second);
 }
@@ -359,7 +360,7 @@ template<typename T> vector<T> ArrayBlockingQueue<T>::toArray()
 		else
 		{
 			int currentIdx=m_frontIdx;
-			while(currentIdx<m_capacity-1)
+			while(currentIdx<static_cast<long int>((m_capacity-1)))
 			{
 				returnVec.emplace_back(m_queue[currentIdx]);
 				++currentIdx;
