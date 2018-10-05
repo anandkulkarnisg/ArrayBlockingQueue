@@ -43,12 +43,11 @@ int main(int argc, char* argv[])
 		blockingQueue.add(i);
 
 	cout << blockingQueue.toString() << endl;
-	// Now try and remove random elements from the queue. items 8 and 12 are removed.
-	cout << "removal status for item = 8 is = " << blockingQueue.remove(8) << endl;
-	cout << blockingQueue.toString() << endl;
-
-	cout << "removal status for item = 12 is = " << blockingQueue.remove(12) << endl;
-	cout << blockingQueue.toString() << endl;
+	for(unsigned int i=7; i<=20; ++i)
+	{
+		cout << "Attempt to remove the item =" << i << ", the status = " << blockingQueue.remove(i) << endl;
+		cout << blockingQueue.toString() << endl; 
+	}
 
 	
 	return(0);	

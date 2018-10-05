@@ -2,7 +2,7 @@
 #include<string>
 
 #include "ArrayBlockingQueue.h"
-#include "ArrayBlockingQueueImpl.cpp"
+#include "ArrayBlockingQueueImpl.h"
 
 using namespace std;
 
