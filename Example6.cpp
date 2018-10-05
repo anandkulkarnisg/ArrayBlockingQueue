@@ -40,7 +40,10 @@ int main(int argc, char* argv[])
 
 	// Let us insert some items into the queue.
 	for(unsigned int i=11; i<=16;++i)
+	{
+		cout << "inserting the item " << i << " into the queue" << endl;
 		blockingQueue.add(i);
+	}
 
 	cout << blockingQueue.toString() << endl;
 	for(unsigned int i=7; i<=20; ++i)
