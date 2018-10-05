@@ -296,15 +296,130 @@ template<typename T> size_t ArrayBlockingQueue<T>::remainingCapacity()
 	return(m_capacity-m_size);
 }
 
-// We implement the remove method.Removes a single instance of the specified element from this queue, if it is present.
+//Removes a single instance of the specified element from this queue, if it is present. More formally, removes an element e such that o.equals(e), 
+//if this queue contains one or more such elements. Returns true if this queue contained the specified element (or equivalently, if this queue changed as a result of the call).
+//Removal of interior elements in circular array based queues is an intrinsically slow and disruptive operation, so should be undertaken only in exceptional circumstances, 
+//ideally only when the queue is known not to be accessible by other threads.
+
 template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	if(isEmpty())
+	// remove one instance of the item present in the queue. i.e the first occurance if any found. 
+	// return true is modification was done else false.
+
+	// case 1 : empty queue. do nothing.
+	if(m_size==0)
 		return(false);
 
-	// This is a costly operation. because removing an element from middle of the queue means the circular buffer has to be painfully shifted and accounted for with every removal found.	
+	// case 2 : one item and is same as the item to be removed. simply reset the queue and return true.
+	if(m_size==1&&m_queue[m_frontIdx]==item)
+	{
+		m_frontIdx=m_rearIdx=-1;
+		m_size=0;
+		return(true);
+	}
 
+	// case 3 : The queue has not wrapped around end , i.e rearIdx>=frontIdx.
+	if(m_rearIdx>m_frontIdx)
+	{
+		int currentIdx=m_frontIdx;
+		int itemPos=-1;
+		while(currentIdx<=m_rearIdx)
+		{				
+			if(m_queue[currentIdx]==item)
+			{
+				itemPos=currentIdx;
+				break;
+			}
+			++currentIdx;
+		}
+
+		if(itemPos!=-1)
+		{
+			currentIdx=itemPos;
+			while(currentIdx<m_rearIdx)
+			{
+				m_queue[currentIdx]=m_queue[currentIdx+1];
+				++currentIdx;
+			}
+			--m_rearIdx;
+			--m_size;
+			return(true);
+		}		
+	}
+
+	// case 4 : The queue has wrapped around the end , ie rearIdx<frontIdx. This one is a bit laborious.
+	if(m_rearIdx<m_frontIdx)
+	{
+		int currentIdx=m_frontIdx;
+		int itemPos=-1;
+		while(currentIdx<=static_cast<long int>(m_capacity-1))
+		{
+			if(m_queue[currentIdx]==item)
+			{
+				itemPos=currentIdx;
+				break;
+			}
+			++currentIdx;
+		}
+
+		if(itemPos!=-1)
+		{
+			currentIdx=itemPos;
+			while(currentIdx<static_cast<long int>(m_capacity-1))
+			{
+				m_queue[currentIdx]=m_queue[currentIdx+1];
+				++currentIdx;
+			}
+		}
+
+		if(itemPos != -1)
+		{
+			// We need to shift all our elements wrapped around by 1 position from end onwards.
+			currentIdx=m_capacity-1;
+			while(currentIdx!=m_rearIdx)
+			{	
+				m_queue[currentIdx]=m_queue[(currentIdx+1)%m_capacity];
+				++currentIdx;
+				currentIdx=currentIdx%m_capacity;
+			}
+			--m_rearIdx;
+			if(m_rearIdx==-1)
+				m_rearIdx=m_capacity-1;
+			--m_size;
+			return(true);
+		}
+
+		// There is a case where item to be removed is on the wrapped up side i.e between index 0 and rearIdx.
+		currentIdx=0;
+		itemPos=-1;
+		while(currentIdx<=m_rearIdx)
+		{	
+			if(m_queue[currentIdx]==item)
+			{
+				itemPos=currentIdx;
+				break;
+			}
+			++currentIdx;
+		}
+
+		// We have found the element and needs a removal.
+		if(itemPos!=-1)
+		{
+			currentIdx=itemPos;
+			while(currentIdx<m_rearIdx)
+			{
+				m_queue[currentIdx]=m_queue[currentIdx+1];
+				++currentIdx;
+			}
+			--m_rearIdx;
+			if(m_rearIdx==-1)
+				m_rearIdx=m_capacity-1;
+			--m_size;
+			return(true);
+		}
+	}
+	return(false);
 }
 
 // We implement the size method. it returns the current size of the queue.
