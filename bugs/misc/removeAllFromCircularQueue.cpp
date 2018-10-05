@@ -61,9 +61,30 @@ int dequeue()
 	return(returnItem);
 }
 
-bool remove(const int& item)
+void showQueueItems()
 {
-	// remove one instance of the item present in the queue. i.e the first occurance if any found. 
+	if(SIZE==0)
+		return;
+
+	if(rearIdx>=frontIdx)
+	{
+		for(int i=frontIdx; i<rearIdx; ++i)
+			cout << array[i] << " , ";
+		cout << array[rearIdx] << '\n';
+	}
+	else
+	{
+		for(int i=frontIdx; i<CAPACITY;++i)
+			cout << array[i] << " , ";
+		for(int i=0; i<rearIdx; ++i)
+			cout << array[i] << ", ";
+		cout << array[rearIdx] << '\n';
+	}
+}
+
+bool removeAll(const int& item)
+{
+	// remove all instances of the item present in the queue. i.e the first occurance if any found. 
 	// return true is modification was done else false.
 
 	// case 1 : empty queue. do nothing.
@@ -81,131 +102,92 @@ bool remove(const int& item)
 	// case 3 : The queue has not wrapped around end , i.e rearIdx>=frontIdx.
 	if(rearIdx>frontIdx)
 	{
-		int currentIdx=frontIdx;
-		int itemPos=-1;
-		while(currentIdx<=rearIdx)
-		{				
-			if(array[currentIdx]==item)
-			{
-				itemPos=currentIdx;
-				break;
-			}
-			++currentIdx;
-		}
-
-		if(itemPos!=-1)
+		int j=frontIdx;
+		int skipCount=0;
+		for(int i=frontIdx; i<=rearIdx; ++i)
 		{
-			currentIdx=itemPos;
-			while(currentIdx<rearIdx)
+			if(array[i]!=item)
 			{
-				array[currentIdx]=array[currentIdx+1];
-				currentIdx++;
+				array[j]=array[i];
+				++j;
+
 			}
-			--rearIdx;
-			--SIZE;
-			return(true);
-		}		
+			else
+				++skipCount;		
+		}
+		--j;
+		rearIdx=j;
+		SIZE-=skipCount;
+		if(SIZE==0)
+			frontIdx=rearIdx=-1;
+
+		if(skipCount)
+			return(true);		
 	}
 
-	// case 4 : The queue has wrapped around the end , ie rearIdx<frontIdx. This one is a bit laborious.
+	// case 4 : The queue is wrapped around. This can be more tricky and complicated to implement.
 	if(rearIdx<frontIdx)
 	{
-		int currentIdx=frontIdx;
-		int itemPos=-1;
-		while(currentIdx<=CAPACITY-1)
+		cout << "I am running the special case" << endl;
+
+		int j=frontIdx;
+		int skipCount=0;
+
+		// Front frontIdx to capacity-1.
+		for(int i=frontIdx; i<CAPACITY;++i)
 		{
-			if(array[currentIdx]==item)
+			if(array[i]!=item)
 			{
-				itemPos=currentIdx;
-				break;
+				array[j]=array[i];
+				++j;
 			}
-			++currentIdx;
+			else
+				++skipCount;
 		}
 
-		if(itemPos!=-1)
+		// From index 0 to rearIdx.
+		for(int i=0; i<=rearIdx; ++i)
 		{
-			currentIdx=itemPos;
-			while(currentIdx<CAPACITY-1)
+			if(array[i]!=item)
 			{
-				array[currentIdx]=array[currentIdx+1];
-				currentIdx++;
+				array[j]=array[i];
+				++j;
+				j=j%CAPACITY;
 			}
+			else
+				++skipCount;
 		}
+		--j;
+		if(j==-1)
+			j=CAPACITY-1;
+		rearIdx=j;
+		SIZE-=skipCount;
+		if(SIZE==0)
+			frontIdx=rearIdx=-1;
 
-		if(itemPos != -1)
-		{
-			// We need to shift all our elements wrapped around by 1 position from end onwards.
-			currentIdx=CAPACITY-1;
-			while(currentIdx!=rearIdx)
-			{	
-				array[currentIdx]=array[(currentIdx+1)%CAPACITY];
-				++currentIdx;
-				currentIdx=currentIdx%CAPACITY;
-			}
-			--rearIdx;
-			if(rearIdx==-1)
-				rearIdx=CAPACITY-1;
-			--SIZE;
+		if(skipCount)
 			return(true);
-		}
-
-		// There is a case where item to be removed is on the wrapped up side i.e between index 0 and rearIdx.
-		currentIdx=0;
-		itemPos=-1;
-		while(currentIdx<=rearIdx)
-		{	
-			if(array[currentIdx]==item)
-			{
-				itemPos=currentIdx;
-				break;
-			}
-			++currentIdx;
-		}
-
-		// We have found the element and needs a removal.
-		if(itemPos!=-1)
-		{
-			currentIdx=itemPos;
-			while(currentIdx<rearIdx)
-			{
-				array[currentIdx]=array[currentIdx+1];
-				++currentIdx;
-			}
-			--rearIdx;
-			if(rearIdx==-1)
-				rearIdx=CAPACITY-1;
-			--SIZE;
-			return(true);
-		}
 	}
 	return(false);
 }
 
 int main(int argc, char* argv[])
 {
-	vector<int> items = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	vector<int> items = { 1, 2, 3, 4, 5, 6, 7, 7, 7, 10 };  // works!
+	//vector<int> items = { 7, 7, 7, 7, 7, 6, 7, 7, 7, 10 };  //  works!
+	//vector<int> items = { 7, 7, 7, 7, 7, 6, 8, 9, 10, 11 }; // works!
 	for(const int& iter : items)
 		enqueue(iter);
 
 	frontIdx=5;
-	rearIdx=1;
+	rearIdx=4;
+	SIZE=10;
 
-	cout << "removal status of 100 = " << remove(100) << endl;
-	cout << "The indices are frontIdx = " << frontIdx << ", the rearIdx = " << rearIdx << endl;
+	showQueueItems();
+	removeAll(7);
+	showQueueItems();
 
-	if(frontIdx>rearIdx)
-	{
-		for(int i=frontIdx; i<CAPACITY;++i)
-			cout << array[i] << ",";
-		for(int i=0; i<=rearIdx; ++i)
-			cout << array[i] << ",";
-	}
-	else
-	{
-		for(int i=frontIdx; i<=rearIdx; ++i)
-			cout << array[i] << ",";
-		cout << '\n';
-	}
+	cout << "frontIdx = " << frontIdx << ", rearIdx = " << rearIdx << ", SIZE = " << SIZE << endl;
 
 	// delete the array at the end.
 	delete[] array;
