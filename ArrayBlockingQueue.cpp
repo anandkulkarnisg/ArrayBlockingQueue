@@ -208,6 +208,15 @@ template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target, const
 	return(result);
 }
 
+// Implement the iterator method. This returns an instance of Iterator<T> which allows one to access elements of ArrayBlockingQueue in read only mode.
+// It has hasNext() and getNext() methods. 
+
+template<typename T> Iterator<T> ArrayBlockingQueue<T>::iterator()
+{
+	const Iterator<T> iterator(&m_queue[0], m_frontIdx, m_rearIdx, m_size, m_capacity);
+	return(iterator);
+}
+
 // Implement the method offer. Inserts the specified element at the tail of this queue if it is possible to do so immediately without exceeding the queue's capacity, 
 // returning true upon success and false if this queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item)

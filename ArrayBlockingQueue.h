@@ -10,6 +10,8 @@
 
 #include "TimeUtils.h"
 #include "ArrayBlockingQueueExceptions.h"
+#include "Iterator.h"
+
 
 #ifndef ArrayBlockingQueue_H
 #define ArrayBlockingQueue_H
@@ -48,7 +50,7 @@ template<typename T> class ArrayBlockingQueue
 		bool contains(const T&);			// Returns true if this queue contains the specified element.
 		int drainTo(std::vector<T>&);		// Removes all available elements from this queue and adds them to the given collection.
 		int drainTo(std::vector<T>&, const int&);	// Removes given size elements or less [ what ever is available till given size ] and adds them into the collection and returns the items added.
-		std::pair<int&,size_t> iterator();  // Returns an iterator over the elements in this queue in proper sequence.
+		Iterator<T> iterator();				// Returns an iterator over the elements in this queue in proper sequence.
 		bool offer(const T&);			// Inserts the specified element at the tail of this queue if it is possible to do so immediately without exceeding the queue's capacity, 
 											// returning true upon success and false if this queue is full.
 		bool offer(const T&, const long&, const TimeUnit&);	// Inserts the specified element at the tail of this queue, 
