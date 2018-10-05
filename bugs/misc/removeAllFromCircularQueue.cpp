@@ -140,6 +140,7 @@ bool removeAll(const int& item)
 			{
 				array[j]=array[i];
 				++j;
+				j=j%CAPACITY;
 			}
 			else
 				++skipCount;
