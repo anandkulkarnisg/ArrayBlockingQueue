@@ -49,6 +49,11 @@ template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
 	if(isFull())
 		throw IllegalStateException();
 	bool returnStatus=enqueue(item);
+	if(returnStatus)
+	{	
+		exclusiveLock.unlock();
+		m_cond.notify_all();
+	}
 	return(returnStatus);
 }
 
@@ -74,7 +79,6 @@ template<typename T> bool ArrayBlockingQueue<T>::enqueue(const T& item)
 	m_rearIdx=m_rearIdx%m_capacity;
 	m_queue[m_rearIdx]=item;
 	++m_size;
-	m_cond.notify_all();
 	return(true);
 } 
 
@@ -97,7 +101,6 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::dequeue()
 		m_frontIdx = (m_frontIdx + 1) % m_capacity;
 	}
 	--m_size;
-	m_cond.notify_all();
 	return(make_pair(true, returnItem));
 }
 
@@ -195,6 +198,8 @@ template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	int result=drainToInternal(target);
+	exclusiveLock.unlock();
+	m_cond.notify_all();
 	return(result);
 }
 
@@ -205,6 +210,8 @@ template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target, const
 	if(size<1)
 		throw IllegalStateException();
 	int result=drainToInternal(target, size);
+	exclusiveLock.unlock();
+	m_cond.notify_all();
 	return(result);
 }
 
@@ -223,6 +230,11 @@ template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	bool returnStatus = enqueue(item);
+	if(returnStatus)
+	{
+		exclusiveLock.unlock();
+		m_cond.notify_all();
+	}
 	return(returnStatus);	
 }
 
@@ -266,6 +278,8 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 		return(returnItem);
 	else
 		returnItem = dequeue();
+	exclusiveLock.unlock();
+	m_cond.notify_all();
 	return(returnItem);
 }
 
@@ -282,7 +296,11 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQu
 	{
 		returnItem = dequeue();
 		if(returnItem.first)
+		{
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(returnItem);	
+		}
 		endTime=chrono::high_resolution_clock::now();
 		durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
 	}
@@ -295,7 +313,12 @@ template<typename T> void ArrayBlockingQueue<T>::put(const T& item)
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(isFull())
 		m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_size)>0); });
-	enqueue(item);
+	bool returnStatus=enqueue(item);
+	if(returnStatus)
+	{
+		exclusiveLock.unlock();
+		m_cond.notify_all();
+	}
 }
 
 // We next implement the remainingCapacity method.Returns the number of additional elements that this queue can ideally (in the absence of memory or resource constraints) accept without blocking.
@@ -445,6 +468,8 @@ template<typename T> T ArrayBlockingQueue<T>::take()
 	if(isEmpty())
 		m_cond.wait(exclusiveLock, [&]() { return(m_size>0); });
 	pair<bool,T> item = dequeue();
+	exclusiveLock.unlock();
+	m_cond.notify_all();
 	return(item.second);
 }
 
