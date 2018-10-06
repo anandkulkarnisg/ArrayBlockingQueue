@@ -9,10 +9,10 @@ template<typename T> class Iterator
 	private:
 		const T* m_data;
 		int m_idx = -1;
-		const int m_frontIdx;
-		const int m_rearIdx;
-		const int m_size;
-		const int m_capacity;
+		const long int m_frontIdx;
+		const long int m_rearIdx;
+		const size_t   m_size;
+		const size_t   m_capacity;
 
 	public:
 		Iterator(const T* startIdx, const size_t& frontIdx, const size_t& rearIdx, const size_t& size, const size_t& capacity): 
@@ -61,7 +61,7 @@ template<typename T> class Iterator
 				{		
 					if(m_idx>=m_frontIdx)					
 					{
-						if(m_idx+1<m_capacity)
+						if(m_idx+1<static_cast<long int>(m_capacity))
 						{
 							++m_idx;
 							return(true);

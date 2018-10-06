@@ -38,7 +38,6 @@ void takeRandomFromQueue(const int& countLimit)
 
 int main(int argc, char* argv[])
 {
-	ArrayBlockingQueue<int> blockingQueue(1000);
 	vector<thread> putThreadPool , takeThreadPool;
 	putThreadPool.reserve(10);
 	takeThreadPool.reserve(10);
