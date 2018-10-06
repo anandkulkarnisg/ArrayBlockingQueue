@@ -30,9 +30,12 @@
 *.exe
 *.out
 *.app
+
+# From cmakegit
 CMakeCache.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
 *.swp
 valgrind.csv
+run.sh
