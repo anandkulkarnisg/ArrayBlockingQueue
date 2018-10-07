@@ -1,0 +1,3 @@
+
+JIRA-2 : How to make the Iterator.h thread safe so that atleast some level of clarity can be introduced in the ArrayBlockingQueue method. Since this is a container that is thread safe this method 
+		 should have some well defined behaviour.

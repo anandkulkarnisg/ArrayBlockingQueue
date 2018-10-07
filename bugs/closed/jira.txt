@@ -1,0 +1,4 @@
+
+1. JIRA - 1 : Implement remove method efficiently using O(1) space - closed [ Implemented a remove method that does not take extra space. removall is also implemented in circularbuffer.cpp. ]
+2. JIRA - 2 : Implement the iterator class so that we can iterate through queue items without popping them out - This is implemented and is not thread safe currently and can change not be relied upon.
+ 
