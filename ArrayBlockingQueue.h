@@ -61,6 +61,7 @@ template<typename T> class ArrayBlockingQueue
 		void put(const T&);					// Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
 		size_t remainingCapacity();			// Returns the number of additional elements that this queue can ideally (in the absence of memory or resource constraints) accept without blocking.
 		bool remove(const T&);				// Removes a single instance of the specified element from this queue, if it is present.
+		bool removeall(const T&);			// Remove all instances of the specificed element from this queue, if present. returns true is queue was modified else false.
 		size_t size();						// Returns the number of elements in this queue.
 		T take();							// Retrieves and removes the head of this queue, waiting if necessary until an element becomes available.
 		std::vector<T> toArray();				// Returns an array containing all of the elements in this queue, in proper sequence.

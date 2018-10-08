@@ -454,6 +454,96 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 	return(false);
 }
 
+// We now implement the removeall method. This is not in Java standard but adding here for sake of completion. removall has compexity of O(n). It is in place with out extra space.
+// space complexity is O(1). This must be used sparigly since removing elements other than front in queue is not frequent operation and must be realized that it can have 
+// performance penalty if used frequently.
+
+template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
+{
+	unique_lock<mutex> exclusiveLock(m_mutex);
+	// case 1 : empty queue. do nothing.
+	if(m_size==0)
+		return(false);
+
+	// case 2 : one item and is same as the item to be removed. simply reset the queue and return true.
+	if(m_size==1 && m_queue[m_frontIdx]==item)
+	{
+		m_frontIdx=m_rearIdx=-1;
+		m_size=0;
+		return(true);
+	}
+	
+	// case 3 : The queue has not wrapped around end , i.e rearIdx>=frontIdx.
+	if(m_rearIdx>m_frontIdx)
+	{
+		int j=m_frontIdx;
+		int skipCount=0;
+		for(int i=m_frontIdx; i<=m_rearIdx; ++i)
+		{
+			if(m_queue[i]!=item)
+			{
+				m_queue[j]=m_queue[i];
+				++j;
+
+			}
+			else
+				++skipCount;		
+		}
+		--j;
+		m_rearIdx=j;
+		m_size-=skipCount;
+		if(m_size==0)
+			m_frontIdx=m_rearIdx=-1;
+
+		if(skipCount)
+			return(true);		
+	}
+
+	// case 4 : The queue is wrapped around. This can be more tricky and complicated to implement.
+	if(m_rearIdx<m_frontIdx)
+	{
+		int j=m_frontIdx;
+		int skipCount=0;
+
+		// Front frontIdx to capacity-1.
+		for(int i=m_frontIdx; i<static_cast<long int>(m_capacity);++i)
+		{
+			if(m_queue[i]!=item)
+			{
+				m_queue[j]=m_queue[i];
+				++j;
+				j=j%m_capacity;
+			}
+			else
+				++skipCount;
+		}
+
+		// From index 0 to rearIdx.
+		for(int i=0; i<=m_rearIdx; ++i)
+		{
+			if(m_queue[i]!=item)
+			{
+				m_queue[j]=m_queue[i];
+				++j;
+				j=j%m_capacity;
+			}
+			else
+				++skipCount;
+		}
+		--j;
+		if(j==-1)
+			j=m_capacity-1;
+		m_rearIdx=j;
+		m_size-=skipCount;
+		if(m_size==0)
+			m_frontIdx=m_rearIdx=-1;
+
+		if(skipCount)
+			return(true);
+	}
+	return(false);
+}
+
 // We implement the size method. it returns the current size of the queue.
 template<typename T> size_t ArrayBlockingQueue<T>::size()
 {
