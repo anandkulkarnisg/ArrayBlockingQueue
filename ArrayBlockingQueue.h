@@ -32,7 +32,7 @@ template<typename T> class ArrayBlockingQueue
 		bool isFull();						// returns if the queue is full to capacity.
 		bool enqueue(const T&);				// Internal method to add item to the queue.
 		std::pair<bool,T> dequeue();		// Internal method to remove item from the queue.
-		int drainToInternal(std::vector<T>&, const int& =-1);	// Internal private implementation to cover both public functions of drainTo.
+		size_t drainToInternal(std::vector<T>&, const long& =-1);	// Internal private implementation to cover both public functions of drainTo.
 		std::string getName();				// This returns the unique memory address as string for toString method.
 		std::string getThreadId();			// This returns the threadId of the executing thread.
 		std::string m_name;
@@ -48,8 +48,8 @@ template<typename T> class ArrayBlockingQueue
 											//without exceeding the queue's capacity, returning true upon success and throwing an IllegalStateException if this queue is full.
 		void clear();						// Atomically removes all of the elements from this queue.
 		bool contains(const T&);			// Returns true if this queue contains the specified element.
-		int drainTo(std::vector<T>&);		// Removes all available elements from this queue and adds them to the given collection.
-		int drainTo(std::vector<T>&, const int&);	// Removes given size elements or less [ what ever is available till given size ] and adds them into the collection and returns the items added.
+		size_t drainTo(std::vector<T>&);		// Removes all available elements from this queue and adds them to the given collection.
+		size_t drainTo(std::vector<T>&, const long&);	// Removes given size elements or less [ what ever is available till given size ] and adds them into the collection and returns the items added.
 		Iterator<T> iterator();				// Returns an iterator over the elements in this queue in proper sequence.
 		bool offer(const T&);			// Inserts the specified element at the tail of this queue if it is possible to do so immediately without exceeding the queue's capacity, 
 											// returning true upon success and false if this queue is full.

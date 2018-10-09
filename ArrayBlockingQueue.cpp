@@ -163,9 +163,9 @@ template<typename T> bool ArrayBlockingQueue<T>::contains(const T& item)
 }
 
 // We need to implement the drainTo method. Removes all available elements from this queue and adds them to the given collection.
-template<typename T> int ArrayBlockingQueue<T>::drainToInternal(vector<T>& target, const int& size)
+template<typename T> size_t ArrayBlockingQueue<T>::drainToInternal(vector<T>& target, const long& size)
 {
-	int returnCount=0;
+	size_t returnCount=0;
 	if(size == -1)
 	{
 		while(!isEmpty())
@@ -180,7 +180,7 @@ template<typename T> int ArrayBlockingQueue<T>::drainToInternal(vector<T>& targe
 	}
 	else
 	{
-		while(!isEmpty() && returnCount!=size)
+		while(!isEmpty() && static_cast<long>(returnCount)!=size)
 		{
 			pair<bool, T> returnItem = dequeue();
 			if(returnItem.first)
@@ -194,22 +194,22 @@ template<typename T> int ArrayBlockingQueue<T>::drainToInternal(vector<T>& targe
 }
 
 // Implement the drainTo method as wrapper around above method.
-template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target)
+template<typename T> size_t ArrayBlockingQueue<T>::drainTo(vector<T>& target)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
-	int result=drainToInternal(target);
+	size_t result=drainToInternal(target);
 	exclusiveLock.unlock();
 	m_cond.notify_all();
 	return(result);
 }
 
 // Implement the drainTo method with a given size.
-template<typename T> int ArrayBlockingQueue<T>::drainTo(vector<T>& target, const int& size)
+template<typename T> size_t ArrayBlockingQueue<T>::drainTo(vector<T>& target, const long& size)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
 	if(size<1)
 		throw IllegalStateException();
-	int result=drainToInternal(target, size);
+	size_t result=drainToInternal(target, size);
 	exclusiveLock.unlock();
 	m_cond.notify_all();
 	return(result);
