@@ -67,8 +67,12 @@ template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
 template<typename T> void ArrayBlockingQueue<T>::clear()
 {
 	// We actually dont need to delete anything. simply reset the tracking flags.
-	unique_lock<mutex> exclusiveLock(m_mutex);
-	m_frontIdx=-1; m_rearIdx=-1; m_size=0;
+	{
+		unique_lock<mutex> exclusiveLock(m_mutex);
+		m_frontIdx=-1; m_rearIdx=-1; m_size=0;
+	}
+
+	m_cond.notify_all();
 }
 
 // We need to implement the two critical internal methods enqueue and dequeue methods. They implement actual queue management.
@@ -257,7 +261,10 @@ template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item, const long
 	{
 		returnStatus=offer(item);
 		if(returnStatus)
+		{
+			m_cond.notify_all();
 			return(true);
+		}
 		endTime=chrono::high_resolution_clock::now();
 		durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
 	}
@@ -364,6 +371,7 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 	{
 		m_frontIdx=m_rearIdx=-1;
 		m_size=0;
+		m_cond.notify_all();
 		return(true);
 	}
 
@@ -392,6 +400,8 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 			}
 			--m_rearIdx;
 			--m_size;
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(true);
 		}		
 	}
@@ -435,6 +445,8 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 			if(m_rearIdx==-1)
 				m_rearIdx=m_capacity-1;
 			--m_size;
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(true);
 		}
 
@@ -464,6 +476,8 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 			if(m_rearIdx==-1)
 				m_rearIdx=m_capacity-1;
 			--m_size;
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(true);
 		}
 	}
@@ -486,9 +500,11 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 	{
 		m_frontIdx=m_rearIdx=-1;
 		m_size=0;
+		exclusiveLock.unlock();
+		m_cond.notify_all();
 		return(true);
 	}
-	
+
 	// case 3 : The queue has not wrapped around end , i.e rearIdx>=frontIdx.
 	if(m_rearIdx>m_frontIdx)
 	{
@@ -512,7 +528,11 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 			m_frontIdx=m_rearIdx=-1;
 
 		if(skipCount)
+		{
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(true);		
+		}
 	}
 
 	// case 4 : The queue is wrapped around. This can be more tricky and complicated to implement.
@@ -555,7 +575,11 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 			m_frontIdx=m_rearIdx=-1;
 
 		if(skipCount)
+		{
+			exclusiveLock.unlock();
+			m_cond.notify_all();
 			return(true);
+		}
 	}
 	return(false);
 }
