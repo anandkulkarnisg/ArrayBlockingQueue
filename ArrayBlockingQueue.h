@@ -1,6 +1,7 @@
 #include<chrono>
 #include<climits>
 #include<condition_variable>
+#include<deque>
 #include<iostream>
 #include<mutex>
 #include<sstream>
@@ -16,6 +17,8 @@
 #ifndef ArrayBlockingQueue_H
 #define ArrayBlockingQueue_H
 
+enum class queueType { putQ, takeQ };
+
 template<typename T> class ArrayBlockingQueue
 {
 	private:
@@ -27,16 +30,21 @@ template<typename T> class ArrayBlockingQueue
 		T* m_queue;                         // This is pointer pointing to the array allocated for this queue. We implement a circular buffer using this array.
 		std::mutex m_mutex;					// We need mutex to ensure thread safety since this class is ThreadSafe as per Java implementation.
 		std::condition_variable m_cond;		// This is required for signalling purpose in the code when there are waiting threads either to enqueue/dequeue the elements.		
+	
+		std::deque<std::string> m_putq;		// This queue manages the put threads waiting for queue to have some space.
+		std::deque<std::string> m_takeq;	// This queue manages the take threads waiting for the queue to have some space.
 
 		bool isEmpty();						// returns true/false to indicate if the queue is empty.
 		bool isFull();						// returns if the queue is full to capacity.
+		bool isFair();						// check if the fairness policy is set.
 		bool enqueue(const T&);				// Internal method to add item to the queue.
 		std::pair<bool,T> dequeue();		// Internal method to remove item from the queue.
 		size_t drainToInternal(std::vector<T>&, const long& =-1);	// Internal private implementation to cover both public functions of drainTo.
 		std::string getName();				// This returns the unique memory address as string for toString method.
 		std::string getThreadId();			// This returns the threadId of the executing thread.
-		std::string m_name;
-					
+		std::string m_name;					// The unique name of the ArrayBlockingQueue derived from its memory location.		
+		void displayQueueThreads(const queueType&);// Display the threads are are queued up.Internal implementation used by wrapper methods of put and take queues. 		
+			
 	public:
 		ArrayBlockingQueue(const size_t&, const bool& = false);	// This creates an empty queue with given capacity and fairness mode [ default false ].
 		ArrayBlockingQueue(const size_t&, const bool&, const std::vector<T>&);	// This creates queue with given capacity, fairness mode and items are populated from input vector collection.
@@ -66,6 +74,8 @@ template<typename T> class ArrayBlockingQueue
 		T take();							// Retrieves and removes the head of this queue, waiting if necessary until an element becomes available.
 		std::vector<T> toArray();				// Returns an array containing all of the elements in this queue, in proper sequence.
 		std::string toString();				// Returns a string representation of this collection.
+		void displayPutQThreads();			// Get a list of threads waiting to put items into a queue.
+		void displayTakeQThreads();			// Get a list of threads waiting to take items from a queue.
 		~ArrayBlockingQueue();				// deallocate the array.
 };
 

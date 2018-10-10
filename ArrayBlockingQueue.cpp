@@ -41,6 +41,12 @@ template<typename T> bool ArrayBlockingQueue<T>::isFull()
 	return(m_size==m_capacity);
 }
 
+// Implement isFair policy.
+template<typename T> bool ArrayBlockingQueue<T>::isFair()
+{
+	return(m_fair);
+}
+
 // We implement the add method now.Inserts the specified element at the tail of this queue if it is possible to do so immediately without exceeding the queue's capacity, 
 // returning true upon success and throwing an IllegalStateException if this queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
@@ -311,8 +317,18 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQu
 template<typename T> void ArrayBlockingQueue<T>::put(const T& item)
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
+	string threadId = getThreadId();
 	if(isFull())
-		m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_size)>0); });
+	{
+		if(isFair())
+		{
+			m_putq.push_back(threadId);
+			m_cond.wait(exclusiveLock, [&]() { return( (m_capacity-m_size)>0 && *m_putq.begin()==threadId); }); 
+			m_putq.pop_front();
+		}
+		else
+			m_cond.wait(exclusiveLock, [&]() { return((m_capacity-m_size)>0); });
+	}
 	bool returnStatus=enqueue(item);
 	if(returnStatus)
 	{
@@ -555,8 +571,18 @@ template<typename T> size_t ArrayBlockingQueue<T>::size()
 template<typename T> T ArrayBlockingQueue<T>::take()
 {
 	unique_lock<mutex> exclusiveLock(m_mutex);
+	string threadId = getThreadId();
 	if(isEmpty())
-		m_cond.wait(exclusiveLock, [&]() { return(m_size>0); });
+	{
+		if(isFair())
+		{
+			m_takeq.push_back(threadId);
+			m_cond.wait(exclusiveLock, [&]() { return((m_size>0)&&(*m_takeq.begin()==threadId)); }); 	
+			m_takeq.pop_front();
+		}			
+		else
+			m_cond.wait(exclusiveLock, [&]() { return(m_size>0); });
+	}
 	pair<bool,T> item = dequeue();
 	exclusiveLock.unlock();
 	m_cond.notify_all();
@@ -614,6 +640,33 @@ template<typename T> string ArrayBlockingQueue<T>::toString()
 	returnString += ", fair = " + to_string(m_fair);
 	returnString += ". ]";
 	return(returnString);	
+}
+
+// We implement the internal function that iterates and displays the queued threads.
+template<typename T> void ArrayBlockingQueue<T>::displayQueueThreads(const queueType& qType)
+{
+	if(qType==queueType::putQ)
+	{
+		for(const auto& iter : m_putq)
+			cout << "ThreadId = " << iter << '\n';
+	}
+	if(qType==queueType::takeQ)
+	{
+		for(const auto& iter : m_takeq)
+			cout << "ThreadId = " << iter << '\n';
+	}
+}
+
+// Implement the displayPutQThreads.
+template<typename T> void ArrayBlockingQueue<T>::displayPutQThreads()
+{
+	displayQueueThreads(queueType::putQ);
+}
+
+// Implement the displayTakeQThreads.
+template<typename T> void ArrayBlockingQueue<T>::displayTakeQThreads()
+{
+	displayQueueThreads(queueType::takeQ);
 }
 
 // Implement the destructor that will clean the queue/array.
