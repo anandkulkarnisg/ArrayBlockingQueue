@@ -371,6 +371,7 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 	{
 		m_frontIdx=m_rearIdx=-1;
 		m_size=0;
+		exclusiveLock.unlock();
 		m_cond.notify_all();
 		return(true);
 	}
