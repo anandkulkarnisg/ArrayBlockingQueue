@@ -12,3 +12,10 @@ a queue does not need iteration in most cases except a few where debugging may b
 
 Hence the current iterator method should generally suffice. If reader has interest he is free to implement a 
 thread safe version.
+
+Additional implementation or minor differences include below.
+
+1. removeall is provided albeit it is very costly and should be used sparingly with care.
+2. peek and poll provide a pair return than nullptr. This is to implement clean semantics without need of nullptrs.
+   The first value of bool indicates if the value should be used else it is to be discarded.
+
