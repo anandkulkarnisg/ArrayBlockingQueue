@@ -33,11 +33,12 @@ template<typename T> class ArrayBlockingQueue
 	
 		std::deque<std::string> m_putq;		// This queue manages the put threads waiting for queue to have some space.
 		std::deque<std::string> m_takeq;	// This queue manages the take threads waiting for the queue to have some space.
-
+	
 		bool isEmpty();						// returns true/false to indicate if the queue is empty.
 		bool isFull();						// returns if the queue is full to capacity.
 		bool isFair();						// check if the fairness policy is set.
 		bool enqueue(const T&);				// Internal method to add item to the queue.
+		void reset();						// reset the queue as if it has no elements.
 		std::pair<bool,T> dequeue();		// Internal method to remove item from the queue.
 		size_t drainToInternal(std::vector<T>&, const long& =-1);	// Internal private implementation to cover both public functions of drainTo.
 		std::string getName();				// This returns the unique memory address as string for toString method.

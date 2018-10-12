@@ -19,7 +19,7 @@ template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& cap
 template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& capacity, const bool& fair, const vector<T>& inputCollection) : m_capacity(capacity), m_fair(fair), 
 	m_frontIdx(-1), m_rearIdx(-1), m_size(0)
 {
-	if(capacity<inputCollection.size() || capacity<1lu)
+	if(capacity<inputCollection.size() || capacity<1)
 		throw IllegalArgumentException();
 
 	unique_lock<mutex> exclusiveLock(m_mutex);
@@ -63,13 +63,21 @@ template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
 	return(returnStatus);
 }
 
+// We implement the reset method which simply resets the queue to empty status. No actual elements are removed , only front,rear and size are reset.
+template<typename T> void ArrayBlockingQueue<T>::reset()
+{
+	// do not take any locks inside this function. The calling method should take one.
+	m_frontIdx=m_rearIdx=-1;
+	m_size=0;
+}
+
 // We now implement the clear method.Atomically removes all of the elements from this queue. 
 template<typename T> void ArrayBlockingQueue<T>::clear()
 {
 	// We actually dont need to delete anything. simply reset the tracking flags.
 	{
 		unique_lock<mutex> exclusiveLock(m_mutex);
-		m_frontIdx=-1; m_rearIdx=-1; m_size=0;
+		reset();
 	}
 
 	m_cond.notify_all();
@@ -369,8 +377,7 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 	// case 2 : one item and is same as the item to be removed. simply reset the queue and return true.
 	if(m_size==1&&m_queue[m_frontIdx]==item)
 	{
-		m_frontIdx=m_rearIdx=-1;
-		m_size=0;
+		reset();
 		exclusiveLock.unlock();
 		m_cond.notify_all();
 		return(true);
@@ -499,8 +506,7 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 	// case 2 : one item and is same as the item to be removed. simply reset the queue and return true.
 	if(m_size==1 && m_queue[m_frontIdx]==item)
 	{
-		m_frontIdx=m_rearIdx=-1;
-		m_size=0;
+		reset();
 		exclusiveLock.unlock();
 		m_cond.notify_all();
 		return(true);
@@ -526,7 +532,7 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 		m_rearIdx=j;
 		m_size-=skipCount;
 		if(m_size==0)
-			m_frontIdx=m_rearIdx=-1;
+			reset();
 
 		if(skipCount)
 		{
@@ -573,7 +579,7 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 		m_rearIdx=j;
 		m_size-=skipCount;
 		if(m_size==0)
-			m_frontIdx=m_rearIdx=-1;
+			reset();
 
 		if(skipCount)
 		{
