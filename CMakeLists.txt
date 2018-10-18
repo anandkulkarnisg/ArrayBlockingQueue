@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(ArrayBlockingQueue)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -Wall -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -Wall -pedantic")
 # Generate shared library libArrayBlockingQueue.so file.
 ADD_LIBRARY(ArrayBlockingQueue SHARED ArrayBlockingQueue.cpp)
 
@@ -16,13 +16,13 @@ add_executable(Example8.out Example8.cpp)
 add_executable(Example9.out Example9.cpp)
 add_executable(Example10.out Example10.cpp)
 
-target_link_libraries(Example1.out ArrayBlockingQueue)
-target_link_libraries(Example2.out ArrayBlockingQueue)
-target_link_libraries(Example3.out ArrayBlockingQueue)
+target_link_libraries(Example1.out ArrayBlockingQueue pthread)
+target_link_libraries(Example2.out ArrayBlockingQueue pthread)
+target_link_libraries(Example3.out ArrayBlockingQueue pthread)
 target_link_libraries(Example4.out ArrayBlockingQueue pthread)
-target_link_libraries(Example5.out ArrayBlockingQueue)
-target_link_libraries(Example6.out ArrayBlockingQueue)
-target_link_libraries(Example7.out ArrayBlockingQueue)
+target_link_libraries(Example5.out ArrayBlockingQueue pthread)
+target_link_libraries(Example6.out ArrayBlockingQueue pthread)
+target_link_libraries(Example7.out ArrayBlockingQueue pthread)
 target_link_libraries(Example8.out ArrayBlockingQueue pthread)
 target_link_libraries(Example9.out ArrayBlockingQueue pthread)
 target_link_libraries(Example10.out ArrayBlockingQueue pthread)

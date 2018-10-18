@@ -1,3 +1,8 @@
 
 JIRA-2 : How to make the Iterator.h thread safe so that atleast some level of clarity can be introduced in the ArrayBlockingQueue method. Since this is a container that is thread safe this method 
-		 should have some well defined behaviour.
+		 should have some well defined behaviour. 
+
+JIRA-3 : How to implement multiple queries on remainingCapacity , size ? These are read only but concurrent operations on the data structure. hence they could be solved potentially using shared_mutex
+         but shared_mutex cant be locked/unlocked using condition_varaible.
+
+

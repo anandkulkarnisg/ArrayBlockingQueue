@@ -22,7 +22,6 @@ template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& cap
 	if(capacity<inputCollection.size() || capacity<1)
 		throw IllegalArgumentException();
 
-	unique_lock<mutex> exclusiveLock(m_mutex);
 	m_queue = new T[capacity];
 	for(const auto& iter : inputCollection)
 		add(iter);
@@ -32,18 +31,21 @@ template<typename T> ArrayBlockingQueue<T>::ArrayBlockingQueue(const size_t& cap
 // We need a few private internal implementations which manage the insertion and removal from the queue.
 template<typename T> bool ArrayBlockingQueue<T>::isEmpty()
 {
+	// Internal call no lock needed. The method calling this takes a lock.
 	return(m_size==0);
 }
 
 // We need to identify if the queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::isFull()
 {
+	// Internal call no lock needed. The method calling this takes a lock.
 	return(m_size==m_capacity);
 }
 
 // Implement isFair policy.
 template<typename T> bool ArrayBlockingQueue<T>::isFair()
 {
+	// Fairness never changes after construction hence it does not need any lock!
 	return(m_fair);
 }
 
@@ -51,7 +53,7 @@ template<typename T> bool ArrayBlockingQueue<T>::isFair()
 // returning true upon success and throwing an IllegalStateException if this queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::add(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	if(isFull())
 		throw IllegalStateException();
 	bool returnStatus=enqueue(item);
@@ -76,7 +78,7 @@ template<typename T> void ArrayBlockingQueue<T>::clear()
 {
 	// We actually dont need to delete anything. simply reset the tracking flags.
 	{
-		unique_lock<mutex> exclusiveLock(m_mutex);
+		unique_lock<shared_mutex> exclusiveLock(m_mutex);
 		reset();
 	}
 
@@ -145,7 +147,7 @@ template<typename T> string ArrayBlockingQueue<T>::getThreadId()
 // We need to implement the contains method. Returns true if this queue contains the specified element.
 template<typename T> bool ArrayBlockingQueue<T>::contains(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	shared_lock<shared_mutex> readLock(m_mutex);
 	if(isEmpty())
 		return(false);
 
@@ -214,7 +216,7 @@ template<typename T> size_t ArrayBlockingQueue<T>::drainToInternal(vector<T>& ta
 // Implement the drainTo method as wrapper around above method.
 template<typename T> size_t ArrayBlockingQueue<T>::drainTo(vector<T>& target)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	size_t result=drainToInternal(target);
 	exclusiveLock.unlock();
 	m_cond.notify_all();
@@ -224,7 +226,7 @@ template<typename T> size_t ArrayBlockingQueue<T>::drainTo(vector<T>& target)
 // Implement the drainTo method with a given size.
 template<typename T> size_t ArrayBlockingQueue<T>::drainTo(vector<T>& target, const long& size)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	if(size<1)
 		throw IllegalStateException();
 	size_t result=drainToInternal(target, size);
@@ -246,7 +248,7 @@ template<typename T> Iterator<T> ArrayBlockingQueue<T>::iterator()
 // returning true upon success and false if this queue is full.
 template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	bool returnStatus = enqueue(item);
 	if(returnStatus)
 	{
@@ -282,7 +284,7 @@ template<typename T> bool ArrayBlockingQueue<T>::offer(const T& item, const long
 // We implement the peek method. Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
 template<typename T> pair<bool,T> ArrayBlockingQueue<T>::peek()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	shared_lock<shared_mutex> readLock(m_mutex);
 	pair<bool, T> returnItem=make_pair(false, T());
 	if(isEmpty())
 		return(returnItem);
@@ -293,7 +295,7 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::peek()
 // We next implement the poll method. Retrieves and removes the head of this queue, or returns null if this queue is empty.
 template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	pair<bool,T> returnItem=make_pair(false, T());
 	if(isEmpty())
 		return(returnItem);
@@ -307,7 +309,7 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 // We next implement the poll with timeout Method. Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
 template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	pair<bool,T> returnItem=make_pair(false, T());
 	auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
 	auto startTime = chrono::high_resolution_clock::now();
@@ -331,7 +333,7 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQu
 // We next implement the put method.Inserts the specified element at the tail of this queue, waiting for space to become available if the queue is full.
 template<typename T> void ArrayBlockingQueue<T>::put(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	string threadId = getThreadId();
 	if(isFull())
 	{
@@ -355,7 +357,7 @@ template<typename T> void ArrayBlockingQueue<T>::put(const T& item)
 // We next implement the remainingCapacity method.Returns the number of additional elements that this queue can ideally (in the absence of memory or resource constraints) accept without blocking.
 template<typename T> size_t ArrayBlockingQueue<T>::remainingCapacity()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	shared_lock<shared_mutex> readLock(m_mutex);
 	return(m_capacity-m_size);
 }
 
@@ -366,7 +368,7 @@ template<typename T> size_t ArrayBlockingQueue<T>::remainingCapacity()
 
 template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	// remove one instance of the item present in the queue. i.e the first occurance if any found. 
 	// return true is modification was done else false.
 
@@ -498,7 +500,7 @@ template<typename T> bool ArrayBlockingQueue<T>::remove(const T& item)
 
 template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	// case 1 : empty queue. do nothing.
 	if(m_size==0)
 		return(false);
@@ -594,14 +596,14 @@ template<typename T> bool ArrayBlockingQueue<T>::removeall(const T& item)
 // We implement the size method. it returns the current size of the queue.
 template<typename T> size_t ArrayBlockingQueue<T>::size()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	shared_lock<shared_mutex> readLock(m_mutex);
 	return(m_size);
 }
 
 // We implement the method take. Retrieves and removes the head of this queue, waiting if necessary until an element becomes available.
 template<typename T> T ArrayBlockingQueue<T>::take()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	string threadId = getThreadId();
 	if(isEmpty())
 	{
@@ -623,7 +625,7 @@ template<typename T> T ArrayBlockingQueue<T>::take()
 // We implement the method toArray now.Returns an array containing all of the elements in this queue, in proper sequence; the runtime type of the returned array is that of the specified array.
 template<typename T> vector<T> ArrayBlockingQueue<T>::toArray()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	vector<T> returnVec;
 	if(isEmpty())
 		return(returnVec);
@@ -661,7 +663,7 @@ template<typename T> vector<T> ArrayBlockingQueue<T>::toArray()
 // We implement the final method toString. Returns a string representation of this collection with various status details. This is helpful for debugging purpose.
 template<typename T> string ArrayBlockingQueue<T>::toString()
 {
-	unique_lock<mutex> exclusiveLock(m_mutex);
+	shared_lock<shared_mutex> readLock(m_mutex);
 	string returnString = " ==> [ ArrayBlockingQueue Name = ArrayBlockingQueue." + m_name;
 	returnString += ", capacity = " + to_string(m_capacity);
 	returnString += ", size = " + to_string(m_size);
@@ -691,12 +693,14 @@ template<typename T> void ArrayBlockingQueue<T>::displayQueueThreads(const queue
 // Implement the displayPutQThreads.
 template<typename T> void ArrayBlockingQueue<T>::displayPutQThreads()
 {
+	shared_lock<shared_mutex> readLock(m_mutex);
 	displayQueueThreads(queueType::putQ);
 }
 
 // Implement the displayTakeQThreads.
 template<typename T> void ArrayBlockingQueue<T>::displayTakeQThreads()
 {
+	shared_lock<shared_mutex> readLock(m_mutex);
 	displayQueueThreads(queueType::takeQ);
 }
 

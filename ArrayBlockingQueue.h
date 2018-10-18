@@ -3,7 +3,7 @@
 #include<condition_variable>
 #include<deque>
 #include<iostream>
-#include<mutex>
+#include<shared_mutex>
 #include<sstream>
 #include<string>
 #include<utility>
@@ -12,7 +12,6 @@
 #include "TimeUtils.h"
 #include "ArrayBlockingQueueExceptions.h"
 #include "Iterator.h"
-
 
 #ifndef ArrayBlockingQueue_H
 #define ArrayBlockingQueue_H
@@ -28,8 +27,8 @@ template<typename T> class ArrayBlockingQueue
 		long int m_rearIdx;					// This tracks the end of the queue in the array. Initially when the queue is created it is set to -1.
 		size_t m_size;						// We track size in a variable.
 		T* m_queue;                         // This is pointer pointing to the array allocated for this queue. We implement a circular buffer using this array.
-		std::mutex m_mutex;					// We need mutex to ensure thread safety since this class is ThreadSafe as per Java implementation.
-		std::condition_variable m_cond;		// This is required for signalling purpose in the code when there are waiting threads either to enqueue/dequeue the elements.		
+		std::shared_mutex m_mutex;			// We need mutex to ensure thread safety since this class is ThreadSafe as per Java implementation.
+		std::condition_variable_any m_cond;	// This is required for signalling purpose in the code when there are waiting threads either to enqueue/dequeue the elements.		
 	
 		std::deque<std::string> m_putq;		// This queue manages the put threads waiting for queue to have some space.
 		std::deque<std::string> m_takeq;	// This queue manages the take threads waiting for the queue to have some space.
