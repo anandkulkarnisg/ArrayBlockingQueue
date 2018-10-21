@@ -309,7 +309,6 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll()
 // We next implement the poll with timeout Method. Retrieves and removes the head of this queue, waiting up to the specified wait time if necessary for an element to become available.
 template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQuantity, const TimeUnit& timeUnit)
 {
-	unique_lock<shared_mutex> exclusiveLock(m_mutex);
 	pair<bool,T> returnItem=make_pair(false, T());
 	auto duration = TimeUtils::waitDuration(waitQuantity, timeUnit).count();
 	auto startTime = chrono::high_resolution_clock::now();
@@ -317,12 +316,16 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::poll(const long& waitQu
 	auto durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
 	while(durationCount<duration)
 	{
-		returnItem = dequeue();
-		if(returnItem.first)
+		unique_lock<shared_mutex> exclusiveLock(m_mutex, defer_lock);
+		if(exclusiveLock.try_lock())
 		{
-			exclusiveLock.unlock();
-			m_cond.notify_all();
-			return(returnItem);	
+			if(!isEmpty())
+			{
+				returnItem=dequeue();
+				return(returnItem);
+			}
+			else
+				exclusiveLock.unlock(); // Else we have a possibility of same thread trying to Lock the mutex multiple times.
 		}
 		endTime=chrono::high_resolution_clock::now();
 		durationCount = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
