@@ -124,7 +124,7 @@ template<typename T> pair<bool,T> ArrayBlockingQueue<T>::dequeue()
 	return(make_pair(true, returnItem));
 }
 
-// Implement simple method to get semaphore name. We dont want to keep deriving this repetative calls of toString().
+// Implement simple method to get ArrayBlockingQueue unique name. We dont want to keep deriving this repetative calls of toString().
 template<typename T> string ArrayBlockingQueue<T>::getName()
 {
 	const void * address = static_cast<const void*>(this);

@@ -22,7 +22,7 @@ template<typename T> class ArrayBlockingQueue
 {
 	private:
 		size_t m_capacity;                  // capacity is the size of the allocated array and it cant be changed after initialization.
-        bool m_fair;                        // This tracks if the implementation is fair to waiting threads i.e FIFO implementation. reduces the performance.
+    bool m_fair;                        // This tracks if the implementation is fair to waiting threads i.e FIFO implementation. reduces the performance.
 		long int m_frontIdx;				// This tracks the front of the queue in the array. Initially when queue is created it is set to -1.
 		long int m_rearIdx;					// This tracks the end of the queue in the array. Initially when the queue is created it is set to -1.
 		size_t m_size;						// We track size in a variable.

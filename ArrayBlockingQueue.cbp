@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ArrayBlockingQueue"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example10.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example10.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example10.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example10.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example10.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example10.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example7.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example7.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example7.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example7.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example7.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example7.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example6.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example6.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example6.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example6.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example6.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example6.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ArrayBlockingQueue">
+				<Option output="/home/anand/git/ArrayBlockingQueue/libArrayBlockingQueue.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 ArrayBlockingQueue"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ArrayBlockingQueue/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/libArrayBlockingQueue.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 ArrayBlockingQueue/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example1.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example1.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example1.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example1.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example1.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example1.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example2.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example2.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example2.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example2.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example2.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example2.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example3.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example3.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example3.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example3.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example3.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example3.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example4.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example4.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example4.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example4.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example4.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example4.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example9.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example9.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example9.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example9.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example9.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example9.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example8.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example8.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example8.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example8.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example8.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example8.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example5.out">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example5.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example5.out"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Example5.out/fast">
+				<Option output="/home/anand/git/ArrayBlockingQueue/Example5.out" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anand/git/ArrayBlockingQueue"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 Example5.out/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/home/anand/git/ArrayBlockingQueue/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/ArrayBlockingQueue.cpp">
+			<Option target="ArrayBlockingQueue"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/ArrayBlockingQueue.h">
+			<Option target="ArrayBlockingQueue"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example1.cpp">
+			<Option target="Example1.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example10.cpp">
+			<Option target="Example10.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example2.cpp">
+			<Option target="Example2.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example3.cpp">
+			<Option target="Example3.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example4.cpp">
+			<Option target="Example4.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example5.cpp">
+			<Option target="Example5.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example6.cpp">
+			<Option target="Example6.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example7.cpp">
+			<Option target="Example7.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example8.cpp">
+			<Option target="Example8.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/Example9.cpp">
+			<Option target="Example9.out"/>
+		</Unit>
+		<Unit filename="/home/anand/git/ArrayBlockingQueue/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
