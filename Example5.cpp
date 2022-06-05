@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
 	// Step 1 : define a array blocking queue for size of 10.
 	ArrayBlockingQueue<int> blockingQueue(10);
 
-
 	// Step 2 : Add 10 elements to make the queue full.
 	vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	for(unsigned int i=0; i<vec.size(); ++i)
